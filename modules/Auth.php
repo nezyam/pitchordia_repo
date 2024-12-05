@@ -1,5 +1,5 @@
 <?php
-class Authentication{
+class Auth{
 
     protected $pdo;
     
@@ -157,8 +157,6 @@ class Authentication{
         $values = [];
         $errmsg = "";
         $code = 0;
-
-
 
         $body->password = $this->encryptPassword($body->password);
 

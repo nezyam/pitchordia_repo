@@ -16,7 +16,7 @@
     date_default_timezone_set("Asia/Manila");
 
     define("SERVER", "localhost");
-    define("DBASE", "chefhub_db"); //enter your own databasename
+    define("DBASE", "pitchordia_db"); //enter your own databasename
     define("USER", "root");
     define("PWORD", "");
     define("TOKEN_KEY", "12E1561FB866FE9D966538F2125A5");

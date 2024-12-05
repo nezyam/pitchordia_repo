@@ -10,7 +10,7 @@ class Delete{
 
   
 
-    public function deleteChefs($id){
+    public function deleteplaylist($id){
         
         $errmsg = "";
         $code = 0;

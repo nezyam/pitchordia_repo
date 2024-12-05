@@ -35,7 +35,7 @@ class Get extends Common{
     }
 
 
-    public function getChefs($id){
+    public function getsong($id){
         
         $condition = "isdeleted = 0";
         if($id != null){
