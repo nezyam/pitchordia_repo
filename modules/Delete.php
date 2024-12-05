@@ -9,7 +9,7 @@ class Delete{
 
 
   
-
+//to edit 
     public function deleteplaylist($id){
         
         $errmsg = "";
