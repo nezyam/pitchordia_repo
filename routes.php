@@ -17,17 +17,10 @@ require_once "./modules/Crypt.php";
 $db= new Connection(); //database connection class
 $pdo = $db ->connect();
 
-$db = new Connection();
-$pdo = $db->connect();
-
 //instantiate post, get class
 $post  = new Post($pdo); //using pdo as argugement and create a contructors
 $get   = new Get($pdo);
 $patch = new Patch($pdo);
-
-$post = new Post($pdo);
-$patch = new Patch($pdo);
-$get = new Get($pdo);
 $delete = new Delete($pdo);
 $auth = new Authentication($pdo);
 $crypt = new Crypt();
@@ -84,10 +77,6 @@ switch($_SERVER['REQUEST_METHOD']){     //to capture using global variable $serv
             } 
             break;
 
-            case "chords":
-               echo json_encode($get->getChords());
-                break;   
-
             case "lyrics":
                     echo json_encode($get->getLyrics());
                      break;
@@ -98,52 +87,13 @@ switch($_SERVER['REQUEST_METHOD']){     //to capture using global variable $serv
                     break;
             }
     break;  
-switch($_SERVER['REQUEST_METHOD']){
 
-    case "GET":
-        if($auth->isAuthorized()){
-            switch($request[0]){
-    
-                case "chefs":
-                    $dataString = json_encode($get->getChefs($request[1] ?? null));
-                    echo $crypt->encryptData($dataString);
-                break;
-     
-                case "menu":
-                    $dataString = json_encode($get->getMenu($request[1] ?? null));
-                    echo $crypt->encryptData($dataString);
-                break;
-
-                case "log":
-                    echo json_encode($get->getLogs($request[1] ?? date("Y-m-d")));
-                break;
-
-             
-                default:
-                    http_response_code(401);
-                    echo "This is invalid endpoint";
-                break;
-           
-            }
-        }
-        else{
-            http_response_code(401);
-        }
-
-    break;
 
     //inserting record
     case "POST":
         $body = json_decode(file_get_contents("php://input"), true);
         switch($request[0]){
-            case "login":
-                echo json_encode($auth->login($body));//
-            break;
-          
-            case "user":
-                echo json_encode($auth->addAccount($body));//additional
-            break;
-               
+
             case "users": //$post-form data 
                 echo json_encode($post->postUsers($body));
                 break;      
@@ -151,7 +101,6 @@ switch($_SERVER['REQUEST_METHOD']){
             case "accounts": //$post-form data 
                 echo json_encode($post->postAcct($body));
                 break;
-
 
             case "playlist":
                 echo json_encode($post->postPlaylist($body));//$post->postPlaylist();
@@ -165,32 +114,28 @@ switch($_SERVER['REQUEST_METHOD']){
     break;
 
 //this is for updating record
-    case "PATCH":
-        $body = json_decode (file_get_contents( "php://input"));
-        switch($request[0]){
+case "PATCH":
+    $body = json_decode(file_get_contents("php://input"), true);
+    switch($request[0]){
 
-            case "users":
-                echo json_encode($patch->patchUsers($body, $request[1]));
+        case "users": //$post-form data 
+            echo json_encode($patch->patchUsers($body, $request[1]));
+            break;      
+         
+        case "accounts": //$post-form data 
+           // echo json_encode($patch->patchAcct($body, $request[1]));
             break;
 
-            case "chefs":
-                // echo json_encode($body);
-                // echo $crypt->decryptData($body);
-                echo json_encode($post->postChefs($body));
-                break;
+        case "playlist":
+           // echo json_encode($patch->patchPlaylist($body, $request[1]));
+            break;                    
 
-            case "menu":
-                echo json_encode($post->postMenu($body));
+        default:
+            http_response_code(401);
+            echo "This is invalid endpoint";
             break;
-
-
-            default:
-                http_response_code(401);
-                echo "This is invalid endpoint";
-            break;
-        }
-    break;
-
+    }
+break;
 //archiving record
 case "DELETE":
     switch($request[0]){
@@ -204,14 +149,10 @@ case "DELETE":
         break;
     }
 break;
-
     default:                                                        
         http_response_code(400); //http response code  200-299 success ,300-399 redirect, 400-499 request error, 500 onwards -server errors
         echo "Invalid Request Method.";// handle exceptions
-    break;
+ 
 }
 
-}
-$pdo = null;
-// unset($pdo);
 ?>

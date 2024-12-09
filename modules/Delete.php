@@ -1,6 +1,5 @@
 <?php
 class Delete{
-<<<<<<< HEAD
         protected $pdo;
         public function __construct(\PDO $pdo){
             $this->pdo = $pdo;
@@ -8,20 +7,8 @@ class Delete{
     
     //to edit posting to database
         
-    }  
-    ?>                                                                  
-=======
-
-    protected $pdo;
-
-    public function __construct(\PDO $pdo){
-        $this->pdo = $pdo;
-    }
-
-
-  
-
-    public function deleteChefs($id){
+ 
+    public function deletUsers($id){
         
         $errmsg = "";
         $code = 0;
@@ -51,4 +38,3 @@ class Delete{
 }
 
 ?>
->>>>>>> c27f45720ab7dff8cd141f3edd3e828b984f95c6
