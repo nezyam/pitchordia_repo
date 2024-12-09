@@ -1,1 +1,1 @@
-my api
+This is my demo project api.
