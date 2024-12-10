@@ -13,7 +13,7 @@ date_default_timezone_set("Asia/Manila"); // default server time
 
 //CONFIGURATION TO COLLECT THE DATABASE-constant
 define("SERVER", "localhost");
-define("DBASE", "testmai"); //enter own database /retrieve data
+define("DBASE", "pitchordia_db"); //enter own database /retrieve data
 define ("USER", "root");
 define("PWORD", "");
 

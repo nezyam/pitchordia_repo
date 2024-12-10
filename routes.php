@@ -14,6 +14,7 @@ require_once "./modules/Delete.php";
 require_once "./modules/Auth.php";
 require_once "./modules/Crypt.php";
 
+
 $db= new Connection(); //database connection class
 $pdo = $db ->connect();
 
@@ -24,6 +25,7 @@ $patch = new Patch($pdo);
 $delete = new Delete($pdo);
 $auth = new Authentication($pdo);
 $crypt = new Crypt();
+
 
 //$delete= new Delete( $pdo);
 
@@ -47,9 +49,25 @@ switch($_SERVER['REQUEST_METHOD']){     //to capture using global variable $serv
         switch($request[0]){               //index of an endpoint start at 0 for indexing request.
             case "users":
                 if (count($request)>1){
-                    echo json_encode($get->getusers($request[1]));
+                    echo json_encode($get->getUsers($request[1]));
                     }else{
-                    echo json_encode($get->getusers());
+                    echo json_encode($get->getUsers());
+                } 
+                 break;
+
+            case "accounts":
+                 if (count($request)>1){
+                 echo json_encode($get->getAccts($request[1]));
+                 }else{
+                 echo json_encode($get->getAccts());
+             } 
+                break;
+
+             case "newplaylist":
+                if (count($request)>1){
+                     echo json_encode($get->getnewPlaylist($request[1]));
+                }else{
+                    echo json_encode($get->getnewPlaylist());
                 } 
                  break;
                 
@@ -61,13 +79,13 @@ switch($_SERVER['REQUEST_METHOD']){     //to capture using global variable $serv
                 } 
                 break;
 
-            case "accounts":
-                if (count($request)>1){
-                echo json_encode($get->getAcctnt($request[1]));
-                }else{
-                echo json_encode($get->getAcctnt());
-            } 
-            break;
+                case "userplaylist":
+                    if (count($request)>1){
+                        echo json_encode($get->getuserPlaylist($request[1]));
+                        }else{
+                        echo json_encode($get->getPlaylist());
+                    } 
+                    break;
 
             case "songs":
                if (count($request)>1){
@@ -102,9 +120,10 @@ switch($_SERVER['REQUEST_METHOD']){     //to capture using global variable $serv
                 echo json_encode($post->postAcct($body));
                 break;
 
-            case "playlist":
-                echo json_encode($post->postPlaylist($body));//$post->postPlaylist();
-                break;                    
+            case "newplaylist":
+                echo json_encode($post->postnewPlaylist($body));//$post->postPlaylist();
+                break;  
+                           
 
             default:
                 http_response_code(401);
@@ -127,7 +146,7 @@ case "PATCH":
             break;
 
         case "playlist":
-           // echo json_encode($patch->patchPlaylist($body, $request[1]));
+           echo json_encode($patch->patchPlaylist($body, $request[1]));
             break;                    
 
         default:
