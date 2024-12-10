@@ -49,7 +49,7 @@ class Patch{
         
             //modified sql string
         try{
-            $sqlString= "UPDATE acct_tbl SET username=?, userpassword=? WHERE acct_id=?";
+            $sqlString= "UPDATE acct_tbl SET user_id=?, username=?, userpassword=? WHERE acct_id=?";
             $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
             $sql-> execute($values);
 
@@ -79,7 +79,36 @@ class Patch{
         
             //modified sql string
         try{
-            $sqlString= "UPDATE playlist SET user_id=?, p_name=? WHERE playlist_id=?";
+            $sqlString= "UPDATE playlist SET user_id=?, p_name=?, songs_id WHERE user_id=?";
+            $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
+            $sql-> execute($values);
+
+            $code =200;
+            $data = null;
+
+            return array("data" =>$data, "code" => $code);
+        }   
+        catch (\PDOException $e){
+            $errmsg = $e ->getMessage();
+            $code = 400;
+
+        }
+        return array( "errmsg"=>$errmsg, "code" => $code);
+    }
+    public function patchSongs($body, $id){ //additional paramiters
+
+        $values=[];
+        $errmsg= "";
+        $code= 0;
+
+        foreach($body as $value){
+        array_push($values, $value);
+        }
+        array_push($values,$id); 
+        
+            //modified sql string
+        try{
+            $sqlString= "UPDATE playlist SET title, artist, lyrics, chords, mp3_path, duration, WHERE user_id=?";
             $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
             $sql-> execute($values);
 
@@ -96,30 +125,6 @@ class Patch{
         return array( "errmsg"=>$errmsg, "code" => $code);
     }
 
-
-
-//archiving DATA
-      public function arcUsers($id){ //additional paramiters      
-        $errmsg= "";
-        $code= 0;       
-            //modified sql string
-        try{
-            $sqlString= "UPDATE user_tbl SET isdeleted=1 WHERE user_id=?";
-            $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
-            $sql-> execute([$id]);
-
-            $code =200;
-            $data = null;
-
-            return array("data" =>$data, "code" => $code);
-        }
-        catch (\PDOException $e){
-            $errmsg = $e ->getMessage();
-            $code = 400;
-
-        }
-        return array( "errmsg"=>$errmsg, "code" => $code);
-    }
 }
     
     ?>                                                                  

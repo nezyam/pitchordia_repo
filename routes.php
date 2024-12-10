@@ -61,31 +61,15 @@ switch($_SERVER['REQUEST_METHOD']){     //to capture using global variable $serv
                  }else{
                  echo json_encode($get->getAccts());
              } 
-                break;
+                break;          
 
-             case "newplaylist":
-                if (count($request)>1){
-                     echo json_encode($get->getnewPlaylist($request[1]));
-                }else{
-                    echo json_encode($get->getnewPlaylist());
-                } 
-                 break;
-                
-            case "playlist":
-                if (count($request)>1){
-                    echo json_encode($get->getPlaylist($request[1]));
-                    }else{
-                    echo json_encode($get->getPlaylist());
-                } 
-                break;
-
-                case "userplaylist":
+                case "playlist":
                     if (count($request)>1){
-                        echo json_encode($get->getuserPlaylist($request[1]));
-                        }else{
-                        echo json_encode($get->getPlaylist());
-                    } 
+                        echo json_encode($get->getPlaylist($request[1]));
+                    }else{
+                        echo json_encode($get->getPlaylist());  
                     break;
+                    }
 
             case "songs":
                if (count($request)>1){
@@ -95,10 +79,6 @@ switch($_SERVER['REQUEST_METHOD']){     //to capture using global variable $serv
             } 
             break;
 
-            case "lyrics":
-                    echo json_encode($get->getLyrics());
-                     break;
-           
             default:
                 http_response_code(401);
                     echo "This is invalid endpoint";
@@ -112,19 +92,28 @@ switch($_SERVER['REQUEST_METHOD']){     //to capture using global variable $serv
         $body = json_decode(file_get_contents("php://input"), true);
         switch($request[0]){
 
+            case "login": 
+                echo json_encode ($auth->login($body));
+                break; 
+
             case "users": //$post-form data 
-                echo json_encode($post->postUsers($body));
+                echo json_encode ($auth->addAccts($body));
                 break;      
              
             case "accounts": //$post-form data 
-                echo json_encode($post->postAcct($body));
+                echo json_encode($post->postUsersacct($body));
                 break;
 
-            case "newplaylist":
-                echo json_encode($post->postnewPlaylist($body));//$post->postPlaylist();
+            case "playlist":
+                echo json_encode($post->postPlaylist($body));//$post->postPlaylist();
                 break;  
-                           
 
+            case "songs":
+                $body = $_POST;
+                $file = $_FILES;
+                echo json_encode($post->postSongs($body, $file));
+                break;  
+                        
             default:
                 http_response_code(401);
                 echo "This is invalid endpoint";
@@ -142,7 +131,7 @@ case "PATCH":
             break;      
          
         case "accounts": //$post-form data 
-           // echo json_encode($patch->patchAcct($body, $request[1]));
+           echo json_encode($patch->patchAccnts($body, $request[1]));
             break;
 
         case "playlist":
@@ -156,18 +145,34 @@ case "PATCH":
     }
 break;
 //archiving record
-case "DELETE":
-    switch($request[0]){
-        case "users":
-            echo json_encode($patch->arcUsers ($request[1]));
-        break;
+    case "DELETE":
+        switch($request[0]){
 
-        default:
-            http_response_code(401);
-            echo "This is invalid endpoint";
-        break;
-    }
-break;
+            case "users":
+                echo json_encode($delete->archiveUsers($request[1]));
+            break;
+
+            case "accounts":
+                echo json_encode($delete->archiveAcct ($request[1]));
+            break;
+
+            case "playlist":
+                echo json_encode($delete->archivePlaylist ($request[1]));
+            break;
+
+            case "songs":
+                echo json_encode($delete->archiveSongs ($request[1]));
+            break;
+
+            default:
+                http_response_code(401);
+                echo "This is invalid endpoint";
+            break;
+        }
+    break;
+
+   
+
     default:                                                        
         http_response_code(400); //http response code  200-299 success ,300-399 redirect, 400-499 request error, 500 onwards -server errors
         echo "Invalid Request Method.";// handle exceptions

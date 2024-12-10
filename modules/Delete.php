@@ -7,33 +7,92 @@ class Delete{
     
     //to edit posting to database
         
- 
-    public function deletUsers($id){
-        
-        $errmsg = "";
-        $code = 0;
-        
-        try{
-            $sqlString = "DELETE FROM chefs_tbl WHERE id = ?";
-            $sql = $this->pdo->prepare($sqlString);
-            $sql->execute([$id]);
+ //archiving DATA
+ public function archiveUsers($id){ //additional paramiters      
+    $errmsg= "";
+    $code= 0;       
+        //modified sql string
+    try{
+        $sqlString= "UPDATE user_tbl SET isdeleted=1 WHERE user_id=?";
+        $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
+        $sql-> execute([$id]);
 
-            $code = 200;
-            $data = null;
+        $code =200;
+        $data = null;
 
-            return array("data"=>$data, "code"=>$code);
-        }
-        catch(\PDOException $e){
-            $errmsg = $e->getMessage();
-            $code = 400;
-        }
-
-        
-        return array("errmsg"=>$errmsg, "code"=>$code);
+        return array("data" =>$data, "code" => $code);
+    }
+    catch (\PDOException $e){
+        $errmsg = $e ->getMessage();
+        $code = 400;
 
     }
+    return array( "errmsg"=>$errmsg, "code" => $code);
+}
+//
+public function archiveAcct($id){ //additional paramiters      
+    $errmsg= "";
+    $code= 0;       
+        //modified sql string
+    try{
+        $sqlString= "UPDATE acct_tbl SET isdeleted=1 WHERE user_id=?";
+        $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
+        $sql-> execute([$id]);
 
+        $code =200;
+        $data = null;
 
+        return array("data" =>$data, "code" => $code);
+    }
+    catch (\PDOException $e){
+        $errmsg = $e ->getMessage();
+        $code = 400;
+
+    }
+    return array( "errmsg"=>$errmsg, "code" => $code);}
+
+//
+    public function archivePlaylist($id){ //additional paramiters      
+        $errmsg= "";
+        $code= 0;       
+            //modified sql string
+        try{
+            $sqlString= "UPDATE playlist SET isdeleted=1 WHERE playlist_id=?";
+            $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
+            $sql-> execute([$id]);
+    
+            $code =200;
+            $data = null;
+    
+            return array("data" =>$data, "code" => $code);
+        }
+        catch (\PDOException $e){
+            $errmsg = $e ->getMessage();
+            $code = 400;
+    
+        }
+        return array( "errmsg"=>$errmsg, "code" => $code);}
+
+public function archiveSongs($id){ //additional paramiters      
+        $errmsg= "";
+        $code= 0;       
+            //modified sql string
+        try{
+            $sqlString= "UPDATE song SET isdeleted=1 WHERE songs_id=?";
+            $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
+            $sql-> execute([$id]);
+    
+            $code =200;
+            $data = null;
+    
+            return array("data" =>$data, "code" => $code);
+        }
+        catch (\PDOException $e){
+            $errmsg = $e ->getMessage();
+            $code = 400;
+    
+        }
+        return array( "errmsg"=>$errmsg, "code" => $code);}
     
 }
 

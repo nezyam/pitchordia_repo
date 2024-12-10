@@ -7,6 +7,7 @@ header("Content-Type: application/json; charset=utf-8");
 header("Access-Control-Allow-Methods: POST,GET,PATCH,DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Content-Type: text/plain");
+header("Content-Type: file");
 
 //header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers");
 date_default_timezone_set("Asia/Manila"); // default server time

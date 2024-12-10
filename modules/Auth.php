@@ -8,19 +8,51 @@ class Authentication{
         $this->pdo = $pdo;
     }
 
- public function addAccounts($body){
+
+public function login($body){
+    $username = $body-> username;
+    $password = $body-> userpassword;
+    $acct_id = $body -> acct_id;
+
+
+    $code = 0;
+    $payload = "";
+    $remarks = ""; 
+    $message = ""; // err message in frontend
+
+    try{ //err in syntax
+        $sqlString  = "SELECT acct_id, username, userpassword, token from acct_tbl WHERE username=?";
+        $stmt = $this -> pdo -> prepare($sqlString);
+        $stmt -> execute([$username]);
+
+        if($stmt-> rowCount () >0){
+
+            return "username found";
+        }else{
+
+        return "user name not found";
+
+        }
+    }   
+    catch (\PDOException $e){
+        $errmsg = $e ->getMessage(); //user info not found
+        $code = 400;
+
+    }
+
+}
+///addaccounts post user
+ public function addAccts($body){
 
     $values= [];
     $errmsg= "";
     $code= 0;
 
-
     foreach ($body as $value){
-
         array_push($values, $value);
     }
     try{
-        $sqlString= "INSERT INTO a (users_id, fname, lname, contacts  WHERE accnts_id=?";
+        $sqlString= "INSERT INTO acct_tbl (user_id ,username, userpassword) VALUES (?,?,?)";
         $sql = $this ->pdo-> prepare($sqlString); //protect sql injection 
         $sql-> execute($values);
 
@@ -36,19 +68,7 @@ class Authentication{
     }
     return array( "errmsg"=>$errmsg, "code" => $code);
     }
- 
-
-
-
-
-
-
-
-
-
-
-
-
+/////login -username and password check if username exist
 
 
     // public function isAuthorized(){
